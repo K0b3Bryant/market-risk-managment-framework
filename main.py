@@ -1,6 +1,14 @@
-# main.py
 import pandas as pd
-from utils import validate_inputs, calculate_portfolio_metrics, calculate_risk_measures
+from utils import (
+    validate_inputs,
+    calculate_portfolio_metrics,
+    calculate_risk_measures,
+    calculate_drawdown,
+    monte_carlo_simulation,
+    stress_test,
+    compute_correlation_matrix,
+    plot_risk_visualizations
+)
 from config import CONFIG
 
 def main():
@@ -25,6 +33,28 @@ def main():
         risk_measures = calculate_risk_measures(portfolio_metrics)
         print("\nRisk Measures:")
         print(risk_measures)
+
+        # Calculate drawdown
+        drawdown_metrics = calculate_drawdown(portfolio_metrics)
+        print("\nDrawdown Metrics:")
+        print(drawdown_metrics)
+
+        # Perform Monte Carlo simulation
+        monte_carlo_results = monte_carlo_simulation(portfolio_metrics['Portfolio_Returns'].dropna())
+        print("\nMonte Carlo Simulation Completed.")
+
+        # Stress Test
+        stress_results = stress_test(portfolio_metrics)
+        print("\nStress Test Results:")
+        print(stress_results)
+
+        # Correlation matrix
+        correlation_matrix = compute_correlation_matrix(validated_data)
+        print("\nCorrelation Matrix:")
+        print(correlation_matrix)
+
+        # Visualize results
+        plot_risk_visualizations(portfolio_metrics, monte_carlo_results, correlation_matrix)
 
     except Exception as e:
         print(f"Error: {e}")
